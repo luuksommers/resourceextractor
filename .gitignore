@@ -1,0 +1,20 @@
+# Folders #
+###################
+ResourceExtractor/bin
+ResourceExtractor/obj
+ResourceExtractorTests/bin
+ResourceExtractorTests/obj
+_ReSharper.ResourceExtractor
+TestResults
+
+# FileGroups #
+############
+*.user
+
+# Logs and databases #
+######################
+
+
+# OS generated files #
+######################
+Thumbs.db
