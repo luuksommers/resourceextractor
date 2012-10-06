@@ -6,31 +6,34 @@ namespace ResourceExtractor
 {
     class CommandLineOptions
     {
-        [Option("e", "export", HelpText = "Export resources to xls (default)")]
-        public bool Export;
+        [Option("e", "", HelpText = "Export resources to xls (default)")]
+        public bool Export = false;
 
-        [Option("i", "import", HelpText = "Import xls to resources")]
-        public bool Import;
+        [Option("i", "", HelpText = "Import xls to resources")]
+        public bool Import = false;
 
-        [Option("d", "directory", Required = false, HelpText = "Input directory to read.")]
+        [Option("d", "", Required = true, HelpText = "Input resource directory / xls to read.")]
         public string InputDirectory = null;
 
-        [Option("l", "language", HelpText = "The language of the main resource.")]
+        [Option("l", "", HelpText = "The language of the main resource.")]
         public string Language = null;
 
-        [Option("o", "output", HelpText = "The output file.")]
-        public string OutputFile = null;
-
-        [Option("r", "recursive", HelpText = "Search recursively through the input directory")]
-        public bool Recursive = false;
+        [Option("x", "", Required = true, HelpText = "The import / export xls file")]
+        public string XlsFile = null;
 
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
-            HelpText help = new HelpText("ResourceExtractor");
+            var help = new HelpText("ResourceExtractor");
             help.Copyright = new CopyrightInfo("Luuk Sommers", 2012);
+            help.AddPreOptionsLine("");
             help.AddPreOptionsLine("Contact me at my blog: http://sameproblemmorecode.blogspot.com");
             help.AddPreOptionsLine("Check for updates at: https://github.com/luuksommers");
+            help.AddPreOptionsLine("");
+            help.AddPreOptionsLine("Examples:");
+            help.AddPreOptionsLine("ResourceExtractor.exe -e -d C:\\Project\\Resources -x C:\\Project\\ResourceExtract.xls -l en");
+            help.AddPreOptionsLine("ResourceExtractor.exe -i -d C:\\Project\\Resources -x C:\\Project\\ResourceExtract.xls -l en");
+            help.AddPreOptionsLine("");
             help.AddOptions(this);
             return help;
         }

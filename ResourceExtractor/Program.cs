@@ -13,12 +13,12 @@ namespace ResourceExtractor
             {
                 if (options.Export)
                 {
-                    var export = new ResourceExport(options.InputDirectory, options.Language, options.OutputFile, options.Recursive);
+                    var export = new ResourceExport(options.InputDirectory, options.Language, options.XlsFile);
                     export.Export();
                 }
                 else
                 {
-                    var importer = new ResourceImport(options.InputDirectory, options.Language, options.OutputFile);
+                    var importer = new ResourceImport(options.XlsFile, options.Language, options.InputDirectory);
                     importer.Import();
                 }
             }

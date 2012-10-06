@@ -29,7 +29,7 @@ namespace ResourceExtractor
                 var fileName = Path.GetFileName(_importXls);
                 Console.WriteLine("Opening xls file {0}...", _importXls);
 
-                var workbook = ReadWorkBook(fileName);
+                var workbook = NpoiHelper.ReadWorkBook(fileName);
                 for (int sheetNr = 0; sheetNr < workbook.NumberOfSheets; sheetNr++)
                 {
                     WorkbookToResx(workbook, workbook.GetSheetAt(sheetNr).SheetName);
@@ -41,19 +41,12 @@ namespace ResourceExtractor
             }
         }
 
-        private HSSFWorkbook ReadWorkBook(string inputPath)
-        {
-            using (var fileStream = new FileStream(inputPath, FileMode.Open, FileAccess.Read))
-            {
-                var workbook = new HSSFWorkbook(fileStream);
-                return workbook;
-            }
-        }
+
 
         private void WorkbookToResx(HSSFWorkbook workbook, string sheetName)
         {
-            var sheet = GetSheet(workbook, sheetName);
-            var cultureRow = GetRow(sheet, CultureRowNum);
+            var sheet = NpoiHelper.GetSheet(workbook, sheetName);
+            var cultureRow = NpoiHelper.GetRow(sheet, CultureRowNum);
             for (int cultureColumnIndex = 1; cultureColumnIndex < cultureRow.LastCellNum; cultureColumnIndex++)
             {
                 string culture = cultureRow.GetCell(cultureColumnIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK).StringCellValue;
@@ -66,48 +59,17 @@ namespace ResourceExtractor
                 {
                     for (var rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++)
                     {
-                        var row = GetRow(sheet, rowIndex);
-                        resxWriter.AddResource(
-                            row.GetCell(NameColumnNum, MissingCellPolicy.CREATE_NULL_AS_BLANK).StringCellValue, 
-                            row.GetCell(cultureColumnIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK).StringCellValue);
+                        var row = NpoiHelper.GetRow(sheet, rowIndex);
+                        var valueRow = row.GetCell(cultureColumnIndex);
+                        if (valueRow != null)
+                        {
+                            resxWriter.AddResource(
+                                row.GetCell(NameColumnNum, MissingCellPolicy.CREATE_NULL_AS_BLANK).StringCellValue,
+                                valueRow.StringCellValue);
+                        }
                     }
                 }
             }
-        }
-
-        private Sheet GetSheet(HSSFWorkbook workbook, string sheetName)
-        {
-            if (workbook != null)
-            {
-                var sheet = workbook.GetSheet(sheetName);
-                if (sheet != null)
-                {
-                    return sheet;
-                }
-            }
-
-            return null;
-        }
-
-        private Row GetRow(Sheet sheet, int? row)
-        {
-            if (sheet != null)
-            {
-                if (row.HasValue)
-                {
-                    var existingRow = sheet.GetRow(row.Value);
-                    if (existingRow != null)
-                    {
-                        return existingRow;
-                    }
-
-                    return sheet.CreateRow(row.Value);
-                }
-
-                return sheet.CreateRow(sheet.LastRowNum + 1);
-            }
-
-            return null;
         }
     }
 }

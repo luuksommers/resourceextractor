@@ -21,7 +21,7 @@ namespace ResourceExtractorTests
                 File.Delete(outputPath);
             }
 
-            var exporter = new ResourceExport(TestContext.DeploymentDirectory, "en", outputPath, false);
+            var exporter = new ResourceExport(TestContext.DeploymentDirectory, "en", outputPath);
 
             // Act
             exporter.Export();
