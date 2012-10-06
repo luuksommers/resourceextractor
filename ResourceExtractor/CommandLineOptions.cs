@@ -6,7 +6,13 @@ namespace ResourceExtractor
 {
     class CommandLineOptions
     {
-        [Option("i", "input", Required = true, HelpText = "Input directory to read.")]
+        [Option("e", "export", HelpText = "Export resources to xls (default)")]
+        public bool Export;
+
+        [Option("i", "import", HelpText = "Import xls to resources")]
+        public bool Import;
+
+        [Option("d", "directory", Required = false, HelpText = "Input directory to read.")]
         public string InputDirectory = null;
 
         [Option("l", "language", HelpText = "The language of the main resource.")]

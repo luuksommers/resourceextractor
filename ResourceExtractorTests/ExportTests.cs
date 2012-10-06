@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResourceExtractor;
 
@@ -14,6 +10,8 @@ namespace ResourceExtractorTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [DeploymentItem("Strings.nl.resx")]
+        [DeploymentItem("Strings.resx")]
         public void Export()
         {
             // Assign
@@ -31,5 +29,5 @@ namespace ResourceExtractorTests
             // Assert
             Assert.IsTrue(File.Exists(outputPath));
         }
-    }
+    }   
 }

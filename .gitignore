@@ -10,6 +10,7 @@ TestResults
 # FileGroups #
 ############
 *.user
+*.suo
 
 # Logs and databases #
 ######################

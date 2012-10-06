@@ -11,8 +11,16 @@ namespace ResourceExtractor
             ICommandLineParser parser = new CommandLineParser();
             if (parser.ParseArguments(args, options, Console.Out))
             {
-                var export = new ResourceExport(options.InputDirectory, options.Language, options.OutputFile, options.Recursive);
-                export.Export();
+                if (options.Export)
+                {
+                    var export = new ResourceExport(options.InputDirectory, options.Language, options.OutputFile, options.Recursive);
+                    export.Export();
+                }
+                else
+                {
+                    var importer = new ResourceImport(options.InputDirectory, options.Language, options.OutputFile);
+                    importer.Import();
+                }
             }
         }
     }
